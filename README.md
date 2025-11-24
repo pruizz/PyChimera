@@ -9,8 +9,7 @@
 
 <br>
 
-**Una implementación práctica de herramientas ofensivas desarrolladas íntegramente en Python.**
-<br>
+**Una implementación práctica de herramientas ofensivas desarrolladas íntegramente en Python.**  
 *Proyecto Académico de Ciberseguridad & Hacking Ético*
 
 [Ver Demo](#-demo) • [Instalación](#-instalación) • [Arsenal](#-arsenal-herramientas) • [Aviso Legal](#-aviso-legal)
@@ -21,43 +20,109 @@
 
 ## 📜 Descripción
 
-**Project Chimera** es una suite modular de ciberseguridad diseñada para simular las 4 fases críticas de un ciberataque real. El objetivo pedagógico es comprender los vectores de ataque (Redes, Criptografía, Forense y Sistemas) para diseñar mejores defensas.
+**Project Chimera** es una suite modular diseñada para fines educativos que simula las 4 fases críticas de una operación ofensiva controlada. El objetivo pedagógico es ayudar a estudiantes y profesionales a comprender vectores de ataque, técnicas de defensa y mitigación en un entorno controlado y responsable.
 
-A diferencia de los scripts de consola tradicionales, Chimera cuenta con una **Interfaz Gráfica (GUI) moderna** basada en `CustomTkinter`, ofreciendo un panel de control centralizado para todas las operaciones.
+Este repositorio contiene implementaciones de laboratorio y utilidades con interfaz gráfica (CustomTkinter) para facilitar prácticas, demostraciones y ejercicios de formación en ciberseguridad.
+
+Nota: El contenido es de naturaleza dual (investigación/educativa). Su uso está estrictamente limitado a entornos de laboratorio, con permiso explícito y conforme a la legislación aplicable. Consulte el apartado "Aviso Legal" más abajo.
 
 ## ⚔️ Arsenal (Herramientas)
 
-La suite "Quimera" combina 4 cabezas (módulos) distintas:
+La suite "Quimera" está organizada en 4 módulos principales (correspondientes a fases de la kill-chain). A continuación se ofrece una visión general de cada módulo. Esta sección describe funcionalidades a alto nivel — no proporciona instrucciones operativas para actividades maliciosas.
 
-| Fase (Kill Chain) | Módulo | Descripción Técnica | Librerías Clave |
+| Fase (Kill Chain) | Módulo | Descripción (resumen) | Librerías clave |
 | :--- | :--- | :--- | :--- |
-| **1. RECON** 👁️ | **Bulk Geo-Tracker** | Análisis forense masivo de metadatos EXIF en carpetas de imágenes. Genera mapas de calor HTML interactivos para trazar rutas GPS de objetivos. | `Pillow`, `Folium` |
-| **2. CRACKING** 🔨 | **Vault Breaker** | Herramienta de fuerza bruta multihilo para la rotura de seguridad en archivos comprimidos (ZIP/PDF) protegidos por contraseña. | `zipfile`, `threading` |
-| **3. CRYPTO** 🔐 | **Ransomware Sim** | Simulador de malware que cifra directorios completos con algoritmo militar **AES-128**, renombra extensiones y modifica el fondo de escritorio. | `cryptography`, `ctypes` |
-| **4. ATTACK** 💀 | **C2 Commander** | Servidor de Comando y Control (Reverse Shell) que permite ejecución remota de comandos y cuenta con un **Keylogger** en tiempo real. | `socket`, `pynput` |
+| 1. RECON 👁️ | Bulk Geo-Tracker | Análisis forense masivo de metadatos EXIF en carpetas de imágenes. Genera visualizaciones HTML con mapas de calor y trazados GPS para análisis forense/privacidad. | Pillow, exifread, folium |
+| 2. CRACKING 🔨 | Vault Breaker | Herramienta de fuerza bruta multihilo orientada a ejercicios de recuperación/recue. Permite evaluar la robustez de contraseñas en archivos protegidos (ZIP/PDF) en entornos de prueba. | zipfile, threading |
+| 3. CRYPTO 🔐 | Ransomware Sim | Simulador de cifrado para uso pedagógico: cifra directorios en un entorno controlado para experimentar con detección y recuperación (soporte para algoritmos simétricos). NO es un malware operativo fuera de laboratorio. | cryptography |
+| 4. ATTACK 💀 | C2 Commander | Framework de pruebas para entender comunicaciones cliente-servidor y telemetría remota en entornos controlados (p. ej. reverse shells de laboratorio y keylogging sólo para ejercicios con consentimiento). | socket, pynput |
+
+> Importante: las implementaciones incluidas están pensadas para pruebas controladas y con fines educativos. Nunca las despliegue contra sistemas sin autorización.
 
 ## 📸 Demo
 
-> *[INSERTA AQUÍ UNA CAPTURA DE TU INTERFAZ]*
-> ![Interfaz Principal](https://via.placeholder.com/800x450?text=Project+Chimera+GUI+Screenshot)
+> Captura de ejemplo de la interfaz (placeholder).
+
+![Interfaz Principal](https://via.placeholder.com/800x450?text=Project+Chimera+GUI+Screenshot)
 
 ## 🚀 Instalación
 
-Sigue estos pasos para desplegar el entorno de desarrollo en tu máquina local:
+Siga estos pasos para preparar un entorno de desarrollo aislado. No ejecute herramientas de este repositorio en máquinas de producción ni contra sistemas ajenos.
 
-### 1. Clonar el repositorio
-bash
-git clone [https://github.com/TU_USUARIO/project-chimera.git](https://github.com/TU_USUARIO/project-chimera.git)
-cd project-chimera
+1. Clonar el repositorio
+```bash
+git clone https://github.com/pruizz/Black-Ops-Toolkit.git
+cd Black-Ops-Toolkit
+```
 
-### 2. Crear entorno virtual (Recomendado)
-Para mantener las librerías aisladas y evitar conflictos:
-
-bash
+2. Crear y activar un entorno virtual (recomendado)
+```bash
 # Windows
 python -m venv venv
 .\venv\Scripts\activate
 
-# Linux/Mac
+# Linux / macOS
 python3 -m venv venv
 source venv/bin/activate
+```
+
+3. Instalar dependencias (si existe requirements.txt)
+```bash
+pip install -r requirements.txt
+```
+
+4. Ejecutar la GUI (ejemplo)
+- Abra una terminal en el directorio del proyecto y ejecute:
+```bash
+python main.py
+```
+Nota: main.py es un ejemplo; consulte la estructura del repo y ajuste según el módulo que vaya a probar. Siempre opere en entornos de laboratorio aislados.
+
+## 📁 Estructura del proyecto
+
+- /docs — Documentación adicional y guías de laboratorio (si está presente).
+- /modules — Cada módulo (recon, cracking, crypto, attack) en su propio subdirectorio.
+- main.py — Punto de entrada de la interfaz gráfica (si aplica).
+- requirements.txt — Dependencias de Python.
+
+(Ajuste según la estructura real del repositorio.)
+
+## 🛡️ Aviso Legal y Ética (Obligatorio)
+
+Este proyecto es exclusivamente para uso educativo, investigación y pruebas en entornos controlados. Cualquier uso de las herramientas aquí descritas para comprometer sistemas, datos o privacidad sin el permiso explícito del propietario constituye una actividad ilegal y está totalmente fuera del propósito de este repositorio.
+
+Al utilizar este software usted:
+- Declara y garantiza que tiene permiso expreso para realizar pruebas en los sistemas objetivo.
+- Acepta no usar estas herramientas para actividades maliciosas o no autorizadas.
+- Comprende que el autor no asume responsabilidad por el uso indebido del código.
+
+Si su intención es practicar, hágalo en máquinas virtuales, laboratorios dedicados (p. ej. entornos CTF, máquinas de práctica) y con autorización.
+
+## 🧭 Buenas prácticas de uso en laboratorio
+
+- Aísle el entorno de pruebas (VMs, redes privadas).
+- Mantenga snapshots/respaldos antes de ejecutar operaciones destructivas.
+- Registre y documente las pruebas.
+- Use cuentas y recursos de prueba, no datos reales de terceros.
+
+## 🤝 Contribuciones
+
+Si desea contribuir:
+- Abra un issue describiendo la propuesta o corrección.
+- Cree PRs pequeñas y enfocadas con tests/documentación.
+- Respete el aviso legal y evite añadir instrucciones operativas que faciliten abuso.
+
+Código malicioso o documentación que promueva actividades ilegales será rechazado.
+
+## 📄 Licencia
+
+Proyecto bajo licencia MIT. Consulte el archivo LICENSE para más detalles.
+
+## 📬 Contacto
+
+- Autor / Mantenedor: pruizz  
+- Para consultas relacionadas con investigación/educación: abra un issue o contacte al mantenedor a través de GitHub.
+
+---
+
+Gracias por revisar Project Chimera. Use estas herramientas con responsabilidad y siempre dentro del marco legal y ético aplicable.
