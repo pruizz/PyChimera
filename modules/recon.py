@@ -4,6 +4,7 @@ from PIL import Image
 from PIL.ExifTags import TAGS, GPSTAGS
 import folium  
 
+FILENAME = "recon_map.html"
 
 def convertir_dms_a_decimal(dms, referencia):
     try:
@@ -40,9 +41,9 @@ def obtener_coordenadas_imagen(ruta_imagen):
             name_tag = TAGS.get(tag_id, tag_id)
             if name_tag == "GPSInfo":
                 # Encontramos el GPS, pero sus datos internos también están codificados --> GPSTAGS los decodifica
-                for t in value:
-                    type_name = GPSTAGS.get(t, t)
-                    gps_info[type_name] = value[t]
+                for t in value:# Recorremos los datos DENTRO del GPS (1, 2, 3, 4...)
+                    type_name = GPSTAGS.get(t, t) #Cogemos los campos especificos denttro de GPS, lat,lon,etc
+                    gps_info[type_name] = value[t] #Los metemos en un mapa para asociar por el nombre y o por susn numeros internos
                 break
         
         # Si después de buscar no tenemos datos GPS, salimos.
@@ -84,7 +85,6 @@ def analizar_directorio(carpeta_objetivo):
             if file.lower().endswith(('.jpg', '.jpeg', '.png', '.tiff')):
                 path = os.path.join(root, file)
                 
-                
                 coordenadas = obtener_coordenadas_imagen(path)
                 
                 if coordenadas:
@@ -102,15 +102,23 @@ def analizar_directorio(carpeta_objetivo):
                     imagenes_encontradas += 1
 
     if imagenes_encontradas > 0:
-        # Centramos el mapa en la última foto encontrada para que se vea bien
+       
+        if len(coordenadas_validas) > 1: # Comprobamos que haya cordenadas vaidas mayor que uno para unirlas con puntos
+            folium.PolyLine(
+                coordenadas_validas, # Lista de puntos 
+                color="blue",        # Color de la línea
+                weight=2.5,          # Grosor
+                opacity=1            # Opacidad
+            ).add_to(mapa)
+        
         mapa.location = coordenadas_validas[0]
-        mapa.zoom_start = 14
+        mapa.fit_bounds(coordenadas_validas)
         
-        filename = "recon_map.html"
-        mapa.save(filename)
         
-        mensaje = f"¡ÉXITO! {imagenes_encontradas} fotos geolocalizadas.\nMapa guardado como '{filename}'."
-        return mensaje, filename
+        mapa.save(FILENAME)
+        
+        mensaje = f"¡ÉXITO! {imagenes_encontradas} fotos geolocalizadas.\nMapa guardado como '{FILENAME}'."
+        return mensaje, FILENAME
     else:
         return "No se encontraron datos GPS en ninguna imagen", None
 
