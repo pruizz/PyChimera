@@ -1,3 +1,5 @@
 images
 modules/__pycache__
 tests
+dist
+modules/chrome.ico

