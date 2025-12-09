@@ -35,10 +35,10 @@ La suite "Quimera" está organizada en 4 módulos principales (correspondientes 
 
 | Fase (Kill Chain) | Módulo | Descripción (resumen) | Librerías clave |
 |:------------------|:-------|:----------------------|:----------------|
-| 1. RECON 👁️ | Bulk Geo-Tracker | Análisis forense masivo de metadatos EXIF en carpetas de imágenes. Genera visualizaciones HTML con mapas de calor y trazados GPS para análisis forense/privacidad. | `Pillow`, `folium`, `geopy` |
-| 2. CRACKING 🔨 | Vault Breaker | Herramienta de fuerza bruta multihilo orientada a ejercicios de recuperación/rescate. Permite evaluar la robustez de contraseñas en archivos protegidos (ZIP/PDF) en entornos de laboratorio. | `pyzipper`, `PyPDF2`, `threading` |
-| 3. CRYPTO 🔐 | Ransomware Sim | Simulador de cifrado para uso pedagógico: cifra directorios en un entorno controlado para experimentar con detección y recuperación (soporte para algoritmos simétricos AES). | `cryptography (Fernet)` |
-| 4. ATTACK 💀 | C2 Commander | Framework de pruebas para entender comunicaciones cliente-servidor y telemetría remota en entornos controlados (p. ej. reverse shells de laboratorio y keylogging sólo en VMs autorizadas). | `socket`, `pynput`, `subprocess` |
+| 1. RECON 👁️ | Bulk Geo-Tracker | Análisis forense masivo de metadatos EXIF en carpetas de imágenes. Genera visualizaciones HTML con mapas de calor y trazados GPS para análisis forense/privacidad. | `Pillow`, `folium`, `os`, `webbrowser` |
+| 2. CRACKING 🔨 | Vault Breaker | Herramienta de fuerza bruta orientada a ejercicios de recuperación/rescate. Permite evaluar la robustez de contraseñas en archivos protegidos (ZIP) mediante ataque de diccionario en entornos de laboratorio. | `zipfile`, `zlib`, `os`, `time` |
+| 3. NETWORK 📡 | Port Scanner | Escáner de puertos multihilo que implementa el patrón productor-consumidor. Detecta servicios vulnerables y puertos abiertos usando 100 hilos concurrentes para optimizar la velocidad del escaneo. | `socket`, `threading`, `queue` |
+| 4. ATTACK 💀 | C2 Commander | Framework de pruebas para entender comunicaciones cliente-servidor y telemetría remota en entornos controlados (p. ej. reverse shells de laboratorio y keylogging sólo en VMs autorizadas). | `socket`, `pynput`, `subprocess`, `threading`, `os` |
 
 > **Importante:** las implementaciones incluidas están pensadas para pruebas controladas y con fines educativos. Nunca las despliegue contra sistemas sin autorización.
 
@@ -59,8 +59,8 @@ Siga estos pasos para preparar un entorno de desarrollo aislado. **No ejecute he
 ### 1. Clonar el repositorio
 
 ```bash
-git clone https://github.com/pruizz/Black-Ops-Toolkit.git
-cd Black-Ops-Toolkit
+git clone https://github.com/pruizz/PyChimera.git
+cd PyChimera
 ```
 
 ### 2. Crear y activar un entorno virtual (recomendado)
@@ -94,13 +94,13 @@ python main.py
 ## 📁 Estructura del proyecto
 
 ```
-Black-Ops-Toolkit/
-├── docs/              # Documentación adicional y guías de laboratorio
-├── modules/           # Cada módulo (recon, cracking, crypto, attack)
-│   ├── recon/
-│   ├── cracking/
-│   ├── crypto/
-│   └── attack/
+PyChimera/
+├── modules/           # Módulos de herramientas de seguridad
+│   ├── recon.py       # Análisis de metadatos EXIF y geolocalización
+│   ├── zipCracker.py  # Cracking de archivos ZIP
+│   ├── portScanner.py # Escáner de puertos multihilo
+│   ├── payload.py     # Payload con keylogger y reverse shell
+│   └── server.py      # Servidor C2 para comunicación con payload
 ├── main.py            # Punto de entrada de la interfaz gráfica
 ├── requirements.txt   # Dependencias de Python
 └── README.md          # Este archivo
