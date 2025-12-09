@@ -184,9 +184,9 @@ class ChimeraToolkit(ctk.CTk):
             self.update()
             
             
-            res = scanner_module.escanear_objetivo(target_ip)
+            res = scanner_module.scan_obj(target_ip)
             
-            # MOSTRAR RESULTADO
+        
             self.console_scanner.insert("end", f"RESULTADOS:\n{'-'*40}\n{res}\n{'-'*40}\n")
             self.console_scanner.insert("end", "\n[✓] Operación finalizada.")
             
@@ -196,7 +196,7 @@ class ChimeraToolkit(ctk.CTk):
     # --- LÓGICA C2 SERVER ---
     def run_c2_server(self):
         python_exe = sys.executable 
-        script_path = os.path.join("modules", "server.py") # Asegúrate del nombre del archivo
+        script_path = os.path.join("modules", "server.py") 
         if not os.path.exists(script_path):
             messagebox.showerror("Error", f"No encuentro: {script_path}")
             return
